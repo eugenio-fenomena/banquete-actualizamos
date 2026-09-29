@@ -475,6 +475,8 @@
             .form-container{    padding: 2rem;}
             .form-section {    padding: 5% 3%;}
         }
+            /* Campo trampa anti-bots: invisible para personas y lectores de pantalla */
+        .hp-field { position: absolute !important; left: -10000px !important; top: auto; width: 1px; height: 1px; overflow: hidden; }
     </style>
 </head>
 <body>
@@ -603,12 +605,16 @@
                     <input type="hidden" name="fbclid" id="fbclid">
                     <input type="hidden" name="gclid" id="gclid">
                     <input type="hidden" name="ttclid" id="ttclid">
+                    <div class="hp-field" aria-hidden="true">
+                        <label for="website">No completar este campo</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
 
                     <div class="form-group">
-                        <input type="text" name="nombre" placeholder="Nombre" required>
+                        <input type="text" name="nombre" placeholder="Nombre" required minlength="2" maxlength="80" autocomplete="name">
                     </div>
                     <div class="form-group">
-                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="email" name="email" placeholder="Email" required maxlength="120" autocomplete="email">
                     </div>
                     <div class="form-group">
                         <label>¿Cuál es tu actualización favorita?</label>
@@ -880,23 +886,33 @@
 
         const subscribeForm = document.getElementById('subscribe-form');
 
+        // Marca de tiempo de cuando se mostró el formulario (el servidor descarta
+        // envíos hechos en menos de 3 s, típicos de bots).
+        let formStartedAt = Date.now();
+
+        // Texto limpio y con largo máximo (los parámetros UTM vienen de la URL
+        // y cualquiera puede manipularlos).
+        const limpio = (v, max) => String(v || '').replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max);
+
         subscribeForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const formData = new FormData(subscribeForm);
             const payload = {
-                nombre: formData.get('nombre'),
-                email: formData.get('email'),
-                favorita: formData.get('favorita'),
+                nombre: limpio(formData.get('nombre'), 80),
+                email: limpio(formData.get('email'), 120),
+                favorita: limpio(formData.get('favorita'), 40),
                 consentimiento: formData.get('consentimiento') === 'on',
-                utm_source: formData.get('utm_source') || '',
-                utm_medium: formData.get('utm_medium') || '',
-                utm_campaign: formData.get('utm_campaign') || '',
-                utm_term: formData.get('utm_term') || '',
-                utm_content: formData.get('utm_content') || '',
-                fbclid: formData.get('fbclid') || '',
-                gclid: formData.get('gclid') || '',
-                ttclid: formData.get('ttclid') || ''
+                utm_source: limpio(formData.get('utm_source'), 150),
+                utm_medium: limpio(formData.get('utm_medium'), 150),
+                utm_campaign: limpio(formData.get('utm_campaign'), 150),
+                utm_term: limpio(formData.get('utm_term'), 150),
+                utm_content: limpio(formData.get('utm_content'), 150),
+                fbclid: limpio(formData.get('fbclid'), 255),
+                gclid: limpio(formData.get('gclid'), 255),
+                ttclid: limpio(formData.get('ttclid'), 255),
+                website: formData.get('website') || '', // campo trampa: una persona lo deja vacío
+                t: formStartedAt
             };
 
             const submitBtn = subscribeForm.querySelector('.btn-submit');
@@ -904,15 +920,30 @@
             submitBtn.textContent = 'ENVIANDO...';
             submitBtn.disabled = true;
 
-            // mode: 'no-cors' es necesario porque Apps Script no agrega
-            // cabeceras CORS; por eso no podemos leer la respuesta real
-            // (fetch siempre resuelve como "éxito" salvo error de red).
-            fetch(SCRIPT_URL, {
+            // Se intenta leer la respuesta real de Apps Script para mostrar un error
+            // si el envío falla. Si el navegador no deja leerla (CORS), se asume
+            // enviado, igual que antes: el script evita duplicados por email.
+            const enviar = () => fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                redirect: 'follow'
             })
+            .then((r) => r.json())
+            .then((res) => { if (!res || res.result !== 'success') throw new Error('respuesta: ' + (res && res.result)); })
+            .catch((err) => {
+                if (err instanceof TypeError) {
+                    return fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                throw err;
+            });
+
+            enviar()
             .then(() => {
                 trackEvent('form_submit', {
                     favorita: payload.favorita,
@@ -924,6 +955,7 @@
                 submitBtn.textContent = '¡LISTO!';
                 subscribeForm.reset();
                 captureTrackingParams(); // vuelve a completar los hidden tras el reset()
+                formStartedAt = Date.now();
                 setTimeout(() => {
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
