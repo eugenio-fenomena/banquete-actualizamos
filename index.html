@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banquete - Actualizamos las Legumbres</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/favicon.png">
+
+    <!-- Meta descripción y Open Graph -->
+    <meta name="description" content="Banquete actualiza su línea de legumbres: Pasta Mix, Conservas, Galletones y Perlitas. Nuevos formatos, la misma proteína vegetal de siempre.">
+    <meta property="og:title" content="Actualizamos las legumbres | Banquete">
+    <meta property="og:description" content="Descubre los nuevos formatos de legumbres Banquete: Pasta Mix, Conservas, Galletones y Perlitas.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/logo-banquete.webp">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- ================= GOOGLE TAG MANAGER =================
+         Contenedor: GTM-MVX8FHPP -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl; f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MVX8FHPP');
+    </script>
+    <!-- ================= FIN GOOGLE TAG MANAGER ================= -->
+
+    <!-- ================= GA4 DIRECTO (opcional) =================
+         Úsalo SOLO si no vas a configurar GA4 dentro de GTM.
+         Si GA4 se maneja vía GTM (lo recomendado), deja esto comentado
+         para no duplicar el conteo de eventos.
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    ================================================================= -->
+
+    <!-- Google Fonts: Zen Dots y fuente base -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Inter:wght@200;500&display=swap" rel="stylesheet">
+
+    <!-- Precarga de la imagen LCP (lineup del hero) para que empiece a bajar cuanto antes -->
+    <link rel="preload" as="image" href="img/hero-lineup.webp" fetchpriority="high">
+
+    <style>
+        /* ================= VARIABLES Y RESET ================= */
+        :root {
+            --text-light: #f5f5f7;
+            --text-muted: #a1a1a6;
+            --banquete-green: #4a7c3b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 200;
+            color: var(--text-light);
+            overflow-x: hidden;
+            background-color: #000;
+        }
+
+        .font-zen {
+            font-family: 'Zen Dots', cursive;
+        }
+
+        /* ================= LOGOS ================= */
+        .logo-header {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            width: 120px;
+            z-index: 50;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+            opacity: 0;
+        }
+
+        footer {
+            width: 100%;
+            padding: 3rem 0 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-legal {
+            font-size: 0.8rem;
+        }
+
+        .footer-legal a {
+            color: var(--text-muted);
+            text-decoration: underline;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-light);
+        }
+
+        .logo-footer {
+            width: 150px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+        }
+
+        .logo-footer:hover {
+            opacity: 1;
+        }
+
+        /* ================= FONDO MESH ================= */
+        #mesh-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background-color: #022005;
+            overflow: hidden;
+            filter: blur(80px);
+        }
+
+        #mesh-bg::before {
+            content: "";
+            position: absolute;
+            top: -25%;
+            right: -20%;
+            width: 85vw;
+            height: 85vh;
+            background: radial-gradient(circle, #e3ef9c 0%, #aee53f 30%, #045e2b 55%, #045e2b 70%, transparent 80%);
+            border-radius: 50%;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 12s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blob-1 { width: 60vw; height: 60vh; background: #1f4a17; top: -10%; left: -10%; }
+        .blob-2 { width: 50vw; height: 50vh; background: #6fae3e; bottom: -20%; right: -10%; animation-delay: -4s; }
+        .blob-3 { width: 70vw; height: 70vh; background: #234d1a; top: 20%; left: 30%; animation-delay: -8s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10%, 20%) scale(1.1); }
+            100% { transform: translate(-10%, -10%) scale(0.9); }
+        }
+
+        #dark-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; background-color: #000; opacity: 0; pointer-events: none;
+        }
+
+        /* ================= ÍCONO DE FONDO (flecha circular) ================= */
+        /* Debe ser MÁS GRANDE que la foto del producto que tiene encima,
+           si no, la foto (opaca) lo tapa por completo. */
+        .icon-texture {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-texture img {
+            width: var(--icon-size, 420px);
+            /*height: var(--icon-size, 420px);*/
+            opacity: 0.18;
+            animation: spin-slow 40s linear infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ================= SECCIONES ================= */
+        section {
+            width: 100%; min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; padding: 5% 10%; position: relative;
+        }
+
+        .hero {
+            flex-direction: column;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge-nuevos {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            padding: 8px 24px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .hero-anim {
+            opacity: 0;
+            filter: blur(20px);
+            transform: scale(1.05);
+        }
+
+        .logotipo {
+            max-width: 90%;
+            margin-top: 2rem;
+            width: 450px;
+            height: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.5rem, 3vw, 3rem);
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-lineup-wrap {
+            width: 100%;
+            max-width: 790px;
+            margin: -35px auto 2.5rem;
+            position: relative;
+            --icon-size: 650px;
+        }
+
+        .hero-lineup-wrap > img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tagline {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 2rem;
+        }
+
+        .hero-disponible {
+            font-size: 1.5rem;
+            font-weight: 200;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            letter-spacing: 1px;
+        }
+
+        .scroll-arrow {
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(15px); }
+            60% { transform: translateY(7px); }
+        }
+
+        /* --- Productos --- */
+        .product-content {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; max-width: 1200px; gap: 4rem;
+        }
+        .product.reverse .product-content { flex-direction: row-reverse; }
+
+        
+        .product-img-wrap {
+            flex: 1; position: relative; display: flex;
+            justify-content: center; align-items: center; min-height: 400px;
+            perspective: 1000px;
+            --icon-size: 420px;
+        }
+
+
+        .product-img-wrap::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background-color: rgb(0 94 41 / 59%);
+            border-radius: 50%;
+            filter: blur(70px);
+            z-index: 0;
+        }
+        .product-text-wrap { flex: 1; opacity: 0; }
+
+        .loader-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 5;
+        }
+
+        .loader {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff; border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .product-img-wrap > img {
+            max-width: 100%; height: auto;
+            border-radius: 20px;
+            object-fit: contain;
+            opacity: 0;
+            max-height: 500px;
+            will-change: transform, filter;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-text-wrap h2 {
+            font-size: 2.2rem; margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .product.reverse .product-text-wrap h2 {
+            justify-content: flex-start;
+        }
+        .product-text-wrap h2 img {
+            width: 2.6rem;
+            height: 2.6rem;
+            object-fit: contain;
+        }
+        .product-text-wrap h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        .product-text-wrap p {
+            font-size: 1.1rem; color: rgba(245, 245, 247, 0.8); font-weight: 200; line-height: 1.6; margin-bottom: 2rem;
+        }
+
+        .btn-ml {
+            /*display: inline-block; padding: 10px 24px; font-size: 0.8rem;*/
+            display:none;
+            font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+            color: #000; background-color: #fff; text-decoration: none;
+            border-radius: 30px; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-ml:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.4); }
+
+        /* --- Formulario --- */
+        .form-section { flex-direction: column; min-height: 80vh; }
+        .form-container {
+            width: 100%; max-width: 500px; background: rgba(255, 255, 255, 0.05);
+            padding: 3rem; border-radius: 20px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); opacity: 0; transform: translateY(50px);
+        }
+        .form-container h2 { text-align: center; margin-bottom: 2rem; font-weight: 500; font-size: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group > label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 1rem; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px; color: white; font-size: 1rem; font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #fff; }
+
+        .radio-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .radio-pills input { position: absolute; opacity: 0; pointer-events: none; }
+        .radio-pills label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .radio-pills label img {
+            width: 1rem;
+            height: 1rem;
+            object-fit: contain;
+        }
+        .radio-pills input:checked + label {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+        .radio-pills input:focus-visible + label { outline: 2px solid #fff; outline-offset: 2px; }
+
+        .consent-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .consent-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 3px;
+            accent-color: #fff;
+            flex-shrink: 0;
+        }
+        .consent-group label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .consent-group a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        .btn-submit {
+            width: 100%; padding: 1rem; background: white; color: black; font-family: 'Zen Dots', cursive;
+            border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; transition: 0.3s;
+        }
+        .btn-submit:hover { background: #e0e0e0; }
+
+        @media (max-width: 768px) {
+            .product-content, .product.reverse .product-content { flex-direction: column; text-align: center; }
+            .product-text-wrap h2,
+            .product.reverse .product-text-wrap h2 {
+                justify-content: center;
+            }
+            /* .badge-nuevos { top: 20px; left: 50%; transform: translateX(-50%); } */
+            .logo-header { width: 90px; top: 20px; right: 5%; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero {
+                padding: 5% 1%;
+            }
+            .logotipo {
+                max-width: 75%;
+                margin-top: 70px;
+            }
+            .form-container{    padding: 2rem;}
+            .form-section {    padding: 5% 3%;}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVX8FHPP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div id="mesh-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div id="dark-overlay"></div>
+
+    <img src="img/logo-banquete.webp" alt="Logo Banquete" class="logo-header hero-anim">
+
+    <main>
+        <section class="hero">
+            <div class="badge-nuevos hero-anim font-zen">Nuevos</div>
+
+            <img class="hero-anim logotipo" src="img/logo-actualizamos.webp" alt="Actualizamos las legumbres">
+
+            <div class="hero-lineup-wrap hero-anim">
+                <div class="icon-texture"><img src="img/flechas.png" alt=""></div>
+                <img src="img/hero-lineup.webp" alt="Línea completa de productos Banquete" fetchpriority="high">
+            </div>
+
+            <p class="hero-tagline hero-anim">Compatibles con tu forma de comer hoy.</p>
+            <p class="hero-disponible hero-anim">Disponible en:</p>
+            <div class="scroll-arrow hero-anim">↓</div>
+        </section>
+
+        <!-- Producto 1: Pasta Mix -->
+        <section class="product" data-product="Pasta Mix">
+            <div class="product-content">
+                <div class="product-img-wrap">
+                    <div class="icon-texture"><img src="img/flechas.png" alt=""></div>
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text font-zen">actualizando...</div>
+                    </div>
+                    <img src="img/pasta-mix.webp" alt="Pasta Mix con Legumbres Banquete">
+                </div>
+                <div class="product-text-wrap">
+                    <h2 class="font-zen">Pasta Mix <img src="img/icono-pasta.png" alt=""></h2>
+                    <h3>El update que tu despensa necesitaba.</h3>
+                    <p>Toda la proteína vegetal de las legumbres con el formato rápido de la pasta. Cocción express para usuarios exigentes.</p>
+                    <a href="https://www.google.com/search?q=pasta+mix+banquete" target="_blank" class="btn-ml">ACCEDE AQUÍ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Producto 2: Conservas (Invertido) -->
+        <section class="product reverse" data-product="Conservas">
+            <div class="product-content">
+                <div class="product-img-wrap">
+                    <div class="icon-texture"><img src="img/flechas.png" alt=""></div>
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text font-zen">actualizando...</div>
+                    </div>
+                    <img src="img/cajas.webp" alt="Conservas Banquete">
+                </div>
+                <div class="product-text-wrap">
+                    <h2 class="font-zen">Conservas <img src="img/icono-conserva.png" alt=""></h2>
+                    <h3>Una versión optimizada para hacerte la vida más fácil.</h3>
+                    <p>Las clásicas legumbres ahora en un formato revolucionario. Más prácticas, fáciles de guardar y listas para usar.</p>
+                    <a href="https://www.google.com/search?q=conservas+banquete" target="_blank" class="btn-ml">ACCEDE AQUÍ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Producto 3: Galletones -->
+        <section class="product" data-product="Galletones">
+            <div class="product-content">
+                <div class="product-img-wrap">
+                    <div class="icon-texture"><img src="img/flechas.png" alt=""></div>
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text font-zen">actualizando...</div>
+                    </div>
+                    <img src="img/galletones.webp" alt="Galletones Banquete">
+                </div>
+                <div class="product-text-wrap">
+                    <h2 class="font-zen">Galletones <img src="img/icono-galleta.png" alt=""></h2>
+                    <h3>Una nueva forma de conectar con las legumbres.</h3>
+                    <p>Todo el poder nutricional de las legumbres optimizado en un formato crujiente y totalmente portátil. Listos para ejecutar en cualquier lugar.</p>
+                    <a href="https://www.google.com/search?q=galletones+banquete" target="_blank" class="btn-ml">ACCEDE AQUÍ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Producto 4: Perlitas (Invertido) -->
+        <section class="product reverse" data-product="Perlitas">
+            <div class="product-content">
+                <div class="product-img-wrap">
+                    <div class="icon-texture"><img src="img/flechas.png" alt=""></div>
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        <div class="loader-text font-zen">actualizando...</div>
+                    </div>
+                    <img src="img/perlitas.webp" alt="Perlitas Banquete">
+                </div>
+                <div class="product-text-wrap">
+                    <h2 class="font-zen">Perlitas <img src="img/icono-perlitas.png" alt=""></h2>
+                    <h3>Rediseñamos la interfaz física de las legumbres.</h3>
+                    <p>Una nueva forma geométrica para experimentar tus sabores favoritos. Compatibilidad perfecta con ensaladas y guisos en tiempo real porque no necesita cocción.</p>
+                    <a href="https://www.google.com/search?q=perlitas+banquete" target="_blank" class="btn-ml">ACCEDE AQUÍ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulario Final -->
+        <section class="form-section" id="feedback">
+            <div class="form-container">
+                <h2 class="font-zen">¿Quieres enterarte de nuestras actualizaciones?</h2>
+                <form id="subscribe-form">
+                    <!-- Campos ocultos de trazabilidad: se completan automáticamente por JS -->
+                    <input type="hidden" name="utm_source" id="utm_source">
+                    <input type="hidden" name="utm_medium" id="utm_medium">
+                    <input type="hidden" name="utm_campaign" id="utm_campaign">
+                    <input type="hidden" name="utm_term" id="utm_term">
+                    <input type="hidden" name="utm_content" id="utm_content">
+                    <input type="hidden" name="fbclid" id="fbclid">
+                    <input type="hidden" name="gclid" id="gclid">
+                    <input type="hidden" name="ttclid" id="ttclid">
+
+                    <div class="form-group">
+                        <input type="text" name="nombre" placeholder="Nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Cuál es tu actualización favorita?</label>
+                        <div class="radio-pills">
+                            <input type="radio" id="fav-pasta" name="favorita" value="Pasta Mix" required>
+                            <label for="fav-pasta"><img src="img/icono-pasta.png" alt="">Pasta Mix</label>
+
+                            <input type="radio" id="fav-conservas" name="favorita" value="Conservas">
+                            <label for="fav-conservas"><img src="img/icono-conserva.png" alt="">Conservas</label>
+
+                            <input type="radio" id="fav-galletones" name="favorita" value="Galletones">
+                            <label for="fav-galletones"><img src="img/icono-galleta.png" alt="">Galletones</label>
+
+                            <input type="radio" id="fav-perlitas" name="favorita" value="Perlitas">
+                            <label for="fav-perlitas"><img src="img/icono-perlitas.png" alt="">Perlitas</label>
+                        </div>
+                    </div>
+                    <div class="form-group consent-group">
+                        <input type="checkbox" id="consentimiento" name="consentimiento" required>
+                        <label for="consentimiento">
+                            Acepto recibir comunicaciones comerciales de Banquete (novedades, lanzamientos y
+                            promociones) y el uso de mi nombre y email para ese fin, exclusivamente por parte
+                            de Banquete. Puedo retirar mi consentimiento cuando quiera escribiendo a
+                            <a href="mailto:contacto@banquete.cl">contacto@banquete.cl</a>. Más información en
+                            nuestra <a href="privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>.
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit">QUIERO ENTERARME</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Pie de página con Logo -->
+        <footer>
+            <img src="img/logo-banquete.webp" alt="Logo Banquete" class="logo-footer">
+            <p class="footer-legal"><a href="privacidad.html">Política de Privacidad</a></p>
+        </footer>
+
+    </main>
+
+    <!-- GSAP & ScrollTrigger: al final del body para no bloquear el parseo/pintado inicial del HTML -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // ================= TRACKING: UTMs & Click IDs =================
+        // Reglas:
+        // 1) Si la URL trae AL MENOS UNA utm, se usan solo esas (las que
+        //    no vengan quedan vacías) y esto REEMPLAZA por completo lo
+        //    guardado en localStorage — nunca se mezcla utm nueva con
+        //    utm vieja.
+        // 2) Si NO hay utms en la URL:
+        //    - Si ya había una atribución de campaña (utm) guardada de
+        //      una visita anterior, se respeta (no se pisa por una
+        //      visita directa/orgánica posterior).
+        //    - Si no había nada guardado, se calcula desde el referrer:
+        //        sin referrer            -> source=direct,   medium=direct
+        //        referrer es Google      -> source=google,   medium=organic
+        //        cualquier otro referrer -> source=referral, medium=<dominio del referrer>
+        // Los click IDs (fbclid/gclid/ttclid) se capturan aparte, siempre
+        // que vengan en la URL, sin depender de esta lógica de utm/referrer.
+        const UTM_FIELDS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+        const CLICK_ID_FIELDS = ['fbclid', 'gclid', 'ttclid'];
+        const TRACKING_STORAGE_KEY = 'banquete_tracking';
+
+        function readStoredTracking() {
+            try {
+                return JSON.parse(localStorage.getItem(TRACKING_STORAGE_KEY)) || null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function detectReferrerAttribution() {
+            const ref = document.referrer;
+
+            if (!ref) {
+                return { utm_source: 'direct', utm_medium: 'direct', utm_campaign: '', utm_term: '', utm_content: '' };
+            }
+
+            let hostname = '';
+            try {
+                hostname = new URL(ref).hostname.replace(/^www\./, '');
+            } catch (e) {
+                hostname = '';
+            }
+
+            if (hostname.indexOf('google') !== -1) {
+                return { utm_source: 'google', utm_medium: 'organic', utm_campaign: '', utm_term: '', utm_content: '' };
+            }
+
+            return { utm_source: 'referral', utm_medium: hostname || 'referral', utm_campaign: '', utm_term: '', utm_content: '' };
+        }
+
+        function captureTrackingParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasUtmInUrl = UTM_FIELDS.some(key => urlParams.has(key));
+            const stored = readStoredTracking();
+
+            let tracking;
+
+            if (hasUtmInUrl) {
+                // Regla 1: nueva entrada CON utm -> reemplaza entero, sin mezclar.
+                tracking = { _attribution_type: 'utm' };
+                UTM_FIELDS.forEach(key => { tracking[key] = urlParams.get(key) || ''; });
+            } else if (stored && stored._attribution_type === 'utm') {
+                // Ya había una atribución de campaña guardada: se respeta.
+                tracking = { _attribution_type: 'utm' };
+                UTM_FIELDS.forEach(key => { tracking[key] = stored[key] || ''; });
+            } else {
+                // Sin utm en la URL y sin atribución de campaña previa -> referrer.
+                tracking = Object.assign({ _attribution_type: 'referrer' }, detectReferrerAttribution());
+            }
+
+            // Click IDs: siempre desde la URL si vienen; si no, se conserva
+            // el último capturado.
+            CLICK_ID_FIELDS.forEach(key => {
+                tracking[key] = urlParams.get(key) || (stored && stored[key]) || '';
+            });
+
+            try {
+                localStorage.setItem(TRACKING_STORAGE_KEY, JSON.stringify(tracking));
+            } catch (e) {
+                // localStorage no disponible (modo privado, etc.) — seguimos igual,
+                // simplemente no persiste entre visitas.
+            }
+
+            UTM_FIELDS.concat(CLICK_ID_FIELDS).forEach(key => {
+                const input = document.getElementById(key);
+                if (input) input.value = tracking[key];
+            });
+
+            return tracking;
+        }
+
+        captureTrackingParams();
+
+        // ================= TRACKING: eventos a dataLayer (GTM) / GA4 =================
+        function trackEvent(eventName, params) {
+            params = params || {};
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push(Object.assign({ event: eventName }, params));
+            // Si cargas GA4 directo (sin pasar por GTM), descomenta la línea de abajo:
+            // if (typeof gtag === 'function') { gtag('event', eventName, params); }
+        }
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // La animación del hero parte apenas cargan SUS imágenes y las fuentes,
+        // sin esperar al resto de la página (fotos de producto, GTM). El evento
+        // "load" queda como respaldo. La animación en sí es la misma.
+        let heroStarted = false;
+        function startHero() {
+            if (heroStarted) return;
+            heroStarted = true;
+            gsap.to(".hero-anim", {
+                opacity: 1,
+                filter: "blur(0px)",
+                scale: 1,
+                duration: 1.5,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.3
+            });
+        }
+        const heroImgs = [...document.querySelectorAll("img.hero-anim, .hero-anim img")];
+        Promise.all([
+            ...heroImgs.map(img => img.complete ? Promise.resolve() : new Promise(res => {
+                img.addEventListener("load", res, { once: true });
+                img.addEventListener("error", res, { once: true });
+            })),
+            document.fonts ? document.fonts.ready : Promise.resolve()
+        ]).then(startHero);
+        window.addEventListener("load", startHero);
+
+        gsap.to("#dark-overlay", {
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1
+            }
+        });
+
+        const products = gsap.utils.toArray('.product');
+        products.forEach(product => {
+            const productName = product.dataset.product || '';
+
+            // IMPORTANTE: selector acotado al hijo directo de .product-img-wrap.
+            const img = product.querySelector('.product-img-wrap > img');
+            const loaderContainer = product.querySelector('.loader-container');
+            const textWrap = product.querySelector('.product-text-wrap');
+            const isReverse = product.classList.contains('reverse');
+
+            let tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: product,
+                    start: "top 65%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            tl.fromTo(textWrap,
+                { opacity: 0, x: isReverse ? -80 : 80 },
+                { opacity: 1, x: 0, duration: 1, ease: "power3.out" }
+            );
+
+            tl.to(loaderContainer, { opacity: 0, duration: 0.3, delay: 0.3 });
+
+            tl.fromTo(img,
+                {
+                    opacity: 0,
+                    filter: "blur(20px) drop-shadow(0px 0px 0px rgba(0,0,0,0))",
+                    scale: 0.8,
+                    rotation: isReverse ? 15 : -15
+                },
+                {
+                    opacity: 1,
+                    filter: "blur(0px) drop-shadow(0px 25px 35px rgba(0,0,0,0.5))",
+                    scale: 1,
+                    rotation: isReverse ? 4 : -4,
+                    duration: 1.2,
+                    ease: "power3.out"
+                },
+                "-=0.1"
+            );
+
+            gsap.to(img, {
+                yPercent: 15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: product,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Evento de tracking: se dispara UNA sola vez por producto,
+            // separado del trigger de la animación para no depender de
+            // hacia dónde esté haciendo scroll el usuario ni de si repite
+            // pasada (once: true evita que se cuente más de una vez).
+            ScrollTrigger.create({
+                trigger: product,
+                start: "top 65%",
+                once: true,
+                onEnter: () => trackEvent('product_scroll', { product_name: productName })
+            });
+        });
+
+        gsap.to(".form-container", {
+            opacity: 1,
+            y: 0,
+            duration: 1.5,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".form-section",
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // ================= ENVÍO DEL FORMULARIO A GOOGLE SHEETS =================
+        // Reemplaza esta URL por la que te entrega Apps Script al implementar
+        // (ver instrucciones en google-apps-script.gs).
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwstY3nAgo83yDxzw0-KPESVdOU2utI6m5ectoa_IE-Ram2RUYEEG-T1rdMef7PqPG_/exec";
+
+        const subscribeForm = document.getElementById('subscribe-form');
+
+        subscribeForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(subscribeForm);
+            const payload = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                favorita: formData.get('favorita'),
+                consentimiento: formData.get('consentimiento') === 'on',
+                utm_source: formData.get('utm_source') || '',
+                utm_medium: formData.get('utm_medium') || '',
+                utm_campaign: formData.get('utm_campaign') || '',
+                utm_term: formData.get('utm_term') || '',
+                utm_content: formData.get('utm_content') || '',
+                fbclid: formData.get('fbclid') || '',
+                gclid: formData.get('gclid') || '',
+                ttclid: formData.get('ttclid') || ''
+            };
+
+            const submitBtn = subscribeForm.querySelector('.btn-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'ENVIANDO...';
+            submitBtn.disabled = true;
+
+            // mode: 'no-cors' es necesario porque Apps Script no agrega
+            // cabeceras CORS; por eso no podemos leer la respuesta real
+            // (fetch siempre resuelve como "éxito" salvo error de red).
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                trackEvent('form_submit', {
+                    favorita: payload.favorita,
+                    utm_source: payload.utm_source,
+                    utm_medium: payload.utm_medium,
+                    utm_campaign: payload.utm_campaign
+                });
+
+                submitBtn.textContent = '¡LISTO!';
+                subscribeForm.reset();
+                captureTrackingParams(); // vuelve a completar los hidden tras el reset()
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            })
+            .catch((err) => {
+                console.error('Error al enviar el formulario:', err);
+                submitBtn.textContent = 'ERROR, INTENTA DE NUEVO';
+                submitBtn.disabled = false;
+                setTimeout(() => { submitBtn.textContent = originalText; }, 3000);
+            });
+        });
+    </script>
+</body>
+</html>
